@@ -13,12 +13,32 @@ let word = getWordForToday();
 let currentRow = 0;
 const maxAttempts = 6;
 
+// Modal logic
+const modal = document.getElementById('create-link-modal');
+const openModalBtn = document.getElementById('open-modal-btn');
+const closeModalBtn = document.getElementsByClassName('close-btn')[0];
+
+openModalBtn.onclick = function() {
+    modal.style.display = 'block';
+};
+
+closeModalBtn.onclick = function() {
+    modal.style.display = 'none';
+};
+
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
+
 document.getElementById('create-link-btn').addEventListener('click', () => {
     const newWord = document.getElementById('create-word-input').value.toLowerCase();
     if (newWord && /^[а-яё]+$/i.test(newWord)) {
         const link = `${window.location.origin}${window.location.pathname}?word=${encodeURIComponent(newWord)}`;
-        document.getElementById('create-link').href = link;
-        document.getElementById('create-link').style.display = 'inline';
+        const linkElement = document.getElementById('generated-link');
+        linkElement.textContent = link;
+        linkElement.style.display = 'block';
     } else {
         alert('Введите корректное слово на русском языке.');
     }
