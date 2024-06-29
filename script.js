@@ -1,3 +1,8 @@
+const words = [
+    'слово', 'пример', 'загадка', 'игра', 'кодекс', 'мышка', 'столик', 'огонь', 'чайник', 'школа'
+    // Добавьте больше слов сюда
+];
+
 function encodeWord(word) {
     return btoa(unescape(encodeURIComponent(word)));
 }
@@ -11,15 +16,15 @@ function decodeWord(encoded) {
     }
 }
 
-let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || getWordForToday();
-let currentRow = 0;
-const maxAttempts = 6;
-
 function getWordForToday() {
     const today = new Date();
     const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
     return words[dayOfYear % words.length];
 }
+
+let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || getWordForToday();
+let currentRow = 0;
+const maxAttempts = 6;
 
 // Modal logic
 const modal = document.getElementById('create-link-modal');
