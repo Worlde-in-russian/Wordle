@@ -10,11 +10,23 @@ function getWordForToday() {
 }
 
 function encodeWord(word) {
-    return encodeURIComponent(word);
+    const wordIndex = words.indexOf(word);
+    if (wordIndex !== -1) {
+        return btoa(wordIndex.toString());
+    }
+    return null;
 }
 
 function decodeWord(encoded) {
-    return decodeURIComponent(encoded);
+    try {
+        const wordIndex = parseInt(atob(encoded));
+        if (!isNaN(wordIndex) && wordIndex < words.length) {
+            return words[wordIndex];
+        }
+    } catch (e) {
+        console.error("Decoding error:", e);
+    }
+    return null;
 }
 
 let word = getWordForToday();
@@ -44,22 +56,25 @@ document.getElementById('create-link-btn').addEventListener('click', () => {
     const newWord = document.getElementById('create-word-input').value.toLowerCase();
     if (newWord && /^[а-яё]+$/i.test(newWord)) {
         const encodedWord = encodeWord(newWord);
-        const link = `${window.location.origin}${window.location.pathname}?word=${encodedWord}`;
-        const linkElement = document.getElementById('generated-link');
-        linkElement.textContent = link;
-        linkElement.style.display = 'block';
+        if (encodedWord) {
+            const link = `${window.location.origin}${window.location.pathname}?word_id=${encodedWord}`;
+            const linkElement = document.getElementById('generated-link');
+            linkElement.textContent = link;
+            linkElement.style.display = 'block';
+        } else {
+            alert('Это слово не в списке допустимых слов.');
+        }
     } else {
         alert('Введите корректное слово на русском языке.');
     }
 });
 
 const urlParams = new URLSearchParams(window.location.search);
-const urlWord = urlParams.get('word');
+const urlWordId = urlParams.get('word_id');
 
-if (urlWord) {
-    try {
-        word = decodeWord(urlWord);
-    } catch (error) {
+if (urlWordId) {
+    word = decodeWord(urlWordId);
+    if (!word) {
         alert('Неверная ссылка или слово повреждено.');
     }
 }
