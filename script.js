@@ -1,37 +1,25 @@
-const words = [
-    'слово', 'пример', 'загадка', 'игра', 'кодекс', 'мышка', 'столик', 'огонь', 'чайник', 'школа'
-    // Добавьте больше слов сюда
-];
+function encodeWord(word) {
+    return btoa(unescape(encodeURIComponent(word)));
+}
+
+function decodeWord(encoded) {
+    try {
+        return decodeURIComponent(escape(atob(encoded)));
+    } catch (e) {
+        console.error("Decoding error:", e);
+        return null;
+    }
+}
+
+let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || getWordForToday();
+let currentRow = 0;
+const maxAttempts = 6;
 
 function getWordForToday() {
     const today = new Date();
     const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
     return words[dayOfYear % words.length];
 }
-
-function encodeWord(word) {
-    const wordIndex = words.indexOf(word);
-    if (wordIndex !== -1) {
-        return btoa(wordIndex.toString());
-    }
-    return null;
-}
-
-function decodeWord(encoded) {
-    try {
-        const wordIndex = parseInt(atob(encoded));
-        if (!isNaN(wordIndex) && wordIndex < words.length) {
-            return words[wordIndex];
-        }
-    } catch (e) {
-        console.error("Decoding error:", e);
-    }
-    return null;
-}
-
-let word = getWordForToday();
-let currentRow = 0;
-const maxAttempts = 6;
 
 // Modal logic
 const modal = document.getElementById('create-link-modal');
@@ -56,14 +44,10 @@ document.getElementById('create-link-btn').addEventListener('click', () => {
     const newWord = document.getElementById('create-word-input').value.toLowerCase();
     if (newWord && /^[а-яё]+$/i.test(newWord)) {
         const encodedWord = encodeWord(newWord);
-        if (encodedWord) {
-            const link = `${window.location.origin}${window.location.pathname}?word_id=${encodedWord}`;
-            const linkElement = document.getElementById('generated-link');
-            linkElement.textContent = link;
-            linkElement.style.display = 'block';
-        } else {
-            alert('Это слово не в списке допустимых слов.');
-        }
+        const link = `${window.location.origin}${window.location.pathname}?word_id=${encodedWord}`;
+        const linkElement = document.getElementById('generated-link');
+        linkElement.textContent = link;
+        linkElement.style.display = 'block';
     } else {
         alert('Введите корректное слово на русском языке.');
     }
@@ -73,8 +57,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const urlWordId = urlParams.get('word_id');
 
 if (urlWordId) {
-    word = decodeWord(urlWordId);
-    if (!word) {
+    const decodedWord = decodeWord(urlWordId);
+    if (decodedWord && /^[а-яё]+$/i.test(decodedWord)) {
+        word = decodedWord;
+    } else {
         alert('Неверная ссылка или слово повреждено.');
     }
 }
