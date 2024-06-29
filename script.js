@@ -1,8 +1,3 @@
-const words = [
-    'слово', 'пример', 'загадка', 'игра', 'кодекс', 'мышка', 'столик', 'огонь', 'чайник', 'школа'
-    // Добавьте больше слов сюда
-];
-
 function encodeWord(word) {
     return btoa(unescape(encodeURIComponent(word)));
 }
@@ -16,13 +11,7 @@ function decodeWord(encoded) {
     }
 }
 
-function getWordForToday() {
-    const today = new Date();
-    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    return words[dayOfYear % words.length];
-}
-
-let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || getWordForToday();
+let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || '';
 let currentRow = 0;
 const maxAttempts = 6;
 
@@ -70,11 +59,13 @@ if (urlWordId) {
     }
 }
 
-document.getElementById('game-board').style.display = 'flex';
-document.getElementById('guess-input').style.display = 'block';
-document.getElementById('submit-btn').style.display = 'block';
-document.getElementById('guess-input').setAttribute('maxlength', word.length);
-createGameBoard(word.length);
+if (word) {
+    document.getElementById('game-board').style.display = 'flex';
+    document.getElementById('guess-input').style.display = 'block';
+    document.getElementById('submit-btn').style.display = 'block';
+    document.getElementById('guess-input').setAttribute('maxlength', word.length);
+    createGameBoard(word.length);
+}
 
 function createGameBoard(wordLength) {
     const board = document.getElementById('game-board');
@@ -134,17 +125,3 @@ document.addEventListener('keypress', (e) => {
         }
     }
 });
-
-function setMidnightTimer() {
-    const now = new Date();
-    const millisTill8 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0, 0) - now;
-    if (millisTill8 < 0) {
-        millisTill8 += 86400000; // 24 hours in milliseconds
-    }
-    setTimeout(() => {
-        word = getWordForToday();
-        window.location.reload();
-    }, millisTill8);
-}
-
-setMidnightTimer();
