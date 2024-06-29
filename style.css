@@ -20,6 +20,20 @@ body {
     left: 10px;
 }
 
+#link-container input, #link-container button {
+    margin-right: 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#link-container button {
+    background-color: #538d4e;
+    color: #ffffff;
+    cursor: pointer;
+}
+
 #link-container img {
     width: 30px;
     height: 32px;
