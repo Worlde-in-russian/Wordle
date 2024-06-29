@@ -22,7 +22,7 @@ document.getElementById('start-game-btn').addEventListener('click', () => {
     }
 
     const hashedWord = hashWord(hiddenWord);
-    localStorage.setItem('hiddenWord', hiddenWord); // Сохраняем слово в localStorage
+    localStorage.setItem(hashedWord, hiddenWord); // Сохраняем слово в localStorage
     const gameLink = `${window.location.origin}${window.location.pathname}?word=${hashedWord}&length=${wordLength}`;
     document.getElementById('game-link').textContent = gameLink;
     document.getElementById('game-link').href = gameLink;
@@ -33,7 +33,7 @@ const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has('word') && urlParams.has('length')) {
     const hashedWord = urlParams.get('word');
     const wordLength = parseInt(urlParams.get('length'), 10);
-    word = localStorage.getItem('hiddenWord');  // Получаем слово из localStorage
+    word = localStorage.getItem(hashedWord);  // Получаем слово из localStorage
 
     if (!word) {
         document.getElementById('message').textContent = "Неверная ссылка или слово.";
