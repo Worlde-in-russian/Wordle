@@ -56,6 +56,10 @@ function createGameBoard(wordLength) {
     }
 }
 
+document.getElementById('guess-input').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/[^а-яё]/gi, '');
+});
+
 document.getElementById('submit-btn').addEventListener('click', () => {
     const guess = document.getElementById('guess-input').value.toLowerCase();
     if (guess.length !== word.length) {
@@ -89,3 +93,11 @@ function resetGame() {
     document.getElementById('guess-input').style.display = 'none';
     document.getElementById('submit-btn').style.display = 'none';
 }
+
+document.addEventListener('keypress', (e) => {
+    if (document.getElementById('guess-input').style.display !== 'none') {
+        if (/[^а-яё]/i.test(e.key)) {
+            e.preventDefault();
+        }
+    }
+});
