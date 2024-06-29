@@ -10,17 +10,11 @@ function getWordForToday() {
 }
 
 function encodeWord(word) {
-    let encoded = btoa(unescape(encodeURIComponent(word)));
-    let noisyEncoded = '';
-    for (let i = 0; i < encoded.length; i++) {
-        noisyEncoded += encoded[i] + Math.random().toString(36).substring(2, 4); // Добавляем "шум"
-    }
-    return noisyEncoded;
+    return btoa(unescape(encodeURIComponent(word)));
 }
 
 function decodeWord(encoded) {
-    let cleanedEncoded = encoded.replace(/.{1,2}/g, char => char[0]); // Удаляем "шум"
-    return decodeURIComponent(escape(atob(cleanedEncoded)));
+    return decodeURIComponent(escape(atob(encoded)));
 }
 
 let word = getWordForToday();
