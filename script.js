@@ -10,11 +10,17 @@ function getWordForToday() {
 }
 
 function encodeWord(word) {
-    return btoa(unescape(encodeURIComponent(word)));
+    let encoded = btoa(unescape(encodeURIComponent(word)));
+    let noisyEncoded = '';
+    for (let i = 0; i < encoded.length; i++) {
+        noisyEncoded += encoded[i] + Math.random().toString(36).substring(2, 4); // Добавляем "шум"
+    }
+    return noisyEncoded;
 }
 
 function decodeWord(encoded) {
-    return decodeURIComponent(escape(atob(encoded)));
+    let cleanedEncoded = encoded.replace(/.{1,2}/g, char => char[0]); // Удаляем "шум"
+    return decodeURIComponent(escape(atob(cleanedEncoded)));
 }
 
 let word = getWordForToday();
@@ -57,7 +63,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const urlWord = urlParams.get('word');
 
 if (urlWord) {
-    word = decodeWord(urlWord);
+    try {
+        word = decodeWord(urlWord);
+    } catch (error) {
+        alert('Неверная ссылка или слово повреждено.');
+    }
 }
 
 document.getElementById('game-board').style.display = 'flex';
