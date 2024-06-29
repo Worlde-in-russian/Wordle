@@ -9,12 +9,10 @@
 <body>
     <div class="game-container">
         <h1>Вордли от друга</h1>
-        <input type="text" id="hidden-word" placeholder="Загадай слово" maxlength="10">
-        <input type="number" id="word-length" placeholder="Длина слова" min="4" max="10">
-        <button id="start-game-btn">Создать ссылку</button>
-        <div id="link-container" style="display:none;">
-            <p>Ссылка для друга:</p>
-            <a id="game-link" href="#" target="_blank"></a>
+        <div id="link-container">
+            <a id="create-link" href="#">
+                <img src="images/sozdat.png" alt="Создать игру">
+            </a>
         </div>
         <div id="game-board" class="vertical-board"></div>
         <input type="text" id="guess-input" maxlength="10" style="display:none;">
