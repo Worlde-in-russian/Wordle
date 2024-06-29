@@ -22,17 +22,18 @@ document.getElementById('start-game-btn').addEventListener('click', () => {
     }
 
     const hashedWord = hashWord(hiddenWord);
-    const gameLink = `${window.location.origin}${window.location.pathname}?word=${hashedWord}`;
+    const gameLink = `${window.location.origin}${window.location.pathname}?word=${hashedWord}&length=${wordLength}`;
     document.getElementById('game-link').textContent = gameLink;
     document.getElementById('game-link').href = gameLink;
     document.getElementById('link-container').style.display = 'block';
 });
 
 const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has('word')) {
+if (urlParams.has('word') && urlParams.has('length')) {
     const hashedWord = urlParams.get('word');
+    const wordLength = parseInt(urlParams.get('length'), 10);
     // Здесь нужно сопоставить хэш с настоящим словом
-    word = "загаданное слово"; // Замените соответствующим образом
+    word = "загаданное слово".substring(0, wordLength); // Замените соответствующим образом
     document.getElementById('start-game-btn').style.display = 'none';
     document.getElementById('hidden-word').style.display = 'none';
     document.getElementById('word-length').style.display = 'none';
@@ -45,13 +46,13 @@ if (urlParams.has('word')) {
 
 function createGameBoard(wordLength) {
     const board = document.getElementById('game-board');
-    for (let i = 0; i < wordLength; i++) {
-        const col = document.createElement('div');
-        for (let j = 0; j < maxAttempts; j++) {
+    for (let i = 0; i < maxAttempts; i++) {
+        const row = document.createElement('div');
+        for (let j = 0; j < wordLength; j++) {
             const cell = document.createElement('div');
-            col.appendChild(cell);
+            row.appendChild(cell);
         }
-        board.appendChild(col);
+        board.appendChild(row);
     }
 }
 
@@ -63,7 +64,7 @@ document.getElementById('submit-btn').addEventListener('click', () => {
     }
     document.getElementById('message').textContent = "";
     for (let i = 0; i < guess.length; i++) {
-        const cell = document.getElementById('game-board').children[i].children[currentRow];
+        const cell = document.getElementById('game-board').children[currentRow].children[i];
         cell.textContent = guess[i];
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
