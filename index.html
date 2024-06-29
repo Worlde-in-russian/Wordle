@@ -9,9 +9,12 @@
 <body>
     <div class="game-container">
         <h1>Wordle на русском</h1>
+        <input type="text" id="hidden-word" placeholder="Загадай слово">
+        <input type="number" id="word-length" placeholder="Длина слова" min="4" max="10">
+        <button id="start-game-btn">Начать игру</button>
         <div id="game-board"></div>
-        <input type="text" id="guess-input" maxlength="5">
-        <button id="submit-btn">Отправить</button>
+        <input type="text" id="guess-input" maxlength="10" style="display:none;">
+        <button id="submit-btn" style="display:none;">Отправить</button>
         <p id="message"></p>
     </div>
     <script src="script.js"></script>
