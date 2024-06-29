@@ -13,11 +13,23 @@ let word = getWordForToday();
 let currentRow = 0;
 const maxAttempts = 6;
 
-document.getElementById('create-link').addEventListener('click', (event) => {
-    event.preventDefault();
-    word = getWordForToday(); // Слово меняется каждый день, здесь не нужно ничего менять
-    window.location.reload(); // Перезагрузка страницы, чтобы начать новую игру
+document.getElementById('create-link-btn').addEventListener('click', () => {
+    const newWord = document.getElementById('create-word-input').value.toLowerCase();
+    if (newWord && /^[а-яё]+$/i.test(newWord)) {
+        const link = `${window.location.origin}${window.location.pathname}?word=${encodeURIComponent(newWord)}`;
+        document.getElementById('create-link').href = link;
+        document.getElementById('create-link').style.display = 'inline';
+    } else {
+        alert('Введите корректное слово на русском языке.');
+    }
 });
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlWord = urlParams.get('word');
+
+if (urlWord) {
+    word = urlWord;
+}
 
 document.getElementById('game-board').style.display = 'flex';
 document.getElementById('guess-input').style.display = 'block';
@@ -27,6 +39,7 @@ createGameBoard(word.length);
 
 function createGameBoard(wordLength) {
     const board = document.getElementById('game-board');
+    board.innerHTML = '';
     for (let i = 0; i < maxAttempts; i++) {
         const row = document.createElement('div');
         for (let j = 0; j < wordLength; j++) {
@@ -82,3 +95,17 @@ document.addEventListener('keypress', (e) => {
         }
     }
 });
+
+function setMidnightTimer() {
+    const now = new Date();
+    const millisTill8 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0, 0) - now;
+    if (millisTill8 < 0) {
+        millisTill8 += 86400000; // 24 hours in milliseconds
+    }
+    setTimeout(() => {
+        word = getWordForToday();
+        window.location.reload();
+    }, millisTill8);
+}
+
+setMidnightTimer();
