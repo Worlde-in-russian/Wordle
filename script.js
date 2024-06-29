@@ -47,7 +47,7 @@ if (urlParams.has('word') && urlParams.has('length')) {
     document.getElementById('guess-input').style.display = 'block';
     document.getElementById('submit-btn').style.display = 'block';
     document.getElementById('guess-input').setAttribute('maxlength', word.length);
-    createGameBoard(word.length);
+    createGameBoard(wordLength);
 }
 
 function createGameBoard(wordLength) {
