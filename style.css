@@ -20,25 +20,16 @@ h1 {
 
 #game-board {
     display: flex;
+    flex-direction: column; /* Изменено для вертикального расположения */
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-.vertical-board {
-    flex-direction: row;
-}
-
-.vertical-board div {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
 #game-board div {
     display: flex;
     justify-content: center;
-    align-items: center;
+    gap: 10px;
 }
 
 #game-board div div {
