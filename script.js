@@ -10,11 +10,11 @@ function getWordForToday() {
 }
 
 function encodeWord(word) {
-    return btoa(unescape(encodeURIComponent(word)));
+    return encodeURIComponent(word);
 }
 
 function decodeWord(encoded) {
-    return decodeURIComponent(escape(atob(encoded)));
+    return decodeURIComponent(encoded);
 }
 
 let word = getWordForToday();
