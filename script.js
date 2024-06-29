@@ -9,6 +9,14 @@ function getWordForToday() {
     return words[dayOfYear % words.length];
 }
 
+function encodeWord(word) {
+    return btoa(unescape(encodeURIComponent(word)));
+}
+
+function decodeWord(encoded) {
+    return decodeURIComponent(escape(atob(encoded)));
+}
+
 let word = getWordForToday();
 let currentRow = 0;
 const maxAttempts = 6;
@@ -35,7 +43,8 @@ window.onclick = function(event) {
 document.getElementById('create-link-btn').addEventListener('click', () => {
     const newWord = document.getElementById('create-word-input').value.toLowerCase();
     if (newWord && /^[а-яё]+$/i.test(newWord)) {
-        const link = `${window.location.origin}${window.location.pathname}?word=${encodeURIComponent(newWord)}`;
+        const encodedWord = encodeWord(newWord);
+        const link = `${window.location.origin}${window.location.pathname}?word=${encodedWord}`;
         const linkElement = document.getElementById('generated-link');
         linkElement.textContent = link;
         linkElement.style.display = 'block';
@@ -48,7 +57,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const urlWord = urlParams.get('word');
 
 if (urlWord) {
-    word = urlWord;
+    word = decodeWord(urlWord);
 }
 
 document.getElementById('game-board').style.display = 'flex';
