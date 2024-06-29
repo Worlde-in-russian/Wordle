@@ -10,14 +10,24 @@ document.getElementById('start-game-btn').addEventListener('click', () => {
         return;
     }
 
-    word = hiddenWord;
-    document.getElementById('message').textContent = "";
-    document.getElementById('game-board').innerHTML = '';
+    const encodedWord = encodeURIComponent(hiddenWord);
+    const gameLink = `${window.location.origin}${window.location.pathname}?word=${encodedWord}`;
+    document.getElementById('game-link').textContent = gameLink;
+    document.getElementById('game-link').href = gameLink;
+    document.getElementById('link-container').style.display = 'block';
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('word')) {
+    word = decodeURIComponent(urlParams.get('word'));
+    document.getElementById('start-game-btn').style.display = 'none';
+    document.getElementById('hidden-word').style.display = 'none';
+    document.getElementById('word-length').style.display = 'none';
+    document.getElementById('game-board').style.display = 'block';
     document.getElementById('guess-input').style.display = 'block';
     document.getElementById('submit-btn').style.display = 'block';
-    document.getElementById('guess-input').setAttribute('maxlength', wordLength);
-    currentRow = 0;
-});
+    document.getElementById('guess-input').setAttribute('maxlength', word.length);
+}
 
 document.getElementById('submit-btn').addEventListener('click', () => {
     const guess = document.getElementById('guess-input').value.toLowerCase();
@@ -54,6 +64,4 @@ document.getElementById('submit-btn').addEventListener('click', () => {
 function resetGame() {
     document.getElementById('guess-input').style.display = 'none';
     document.getElementById('submit-btn').style.display = 'none';
-    document.getElementById('hidden-word').value = '';
-    document.getElementById('word-length').value = '';
 }
