@@ -20,23 +20,10 @@ body {
     left: 10px;
 }
 
-#link-container input, #link-container button {
-    margin-right: 10px;
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-#link-container button {
-    background-color: #538d4e;
-    color: #ffffff;
-    cursor: pointer;
-}
-
 #link-container img {
     width: 30px;
     height: 32px;
+    cursor: pointer;
 }
 
 h1 {
@@ -46,7 +33,7 @@ h1 {
 
 #game-board {
     display: flex;
-    flex-direction: column; /* Изменено для вертикального расположения */
+    flex-direction: column;
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
@@ -88,4 +75,50 @@ h1 {
 #message {
     margin-top: 10px;
     color: red;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #121213;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    color: white;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#generated-link {
+    word-wrap: break-word;
+    color: #538d4e;
 }
