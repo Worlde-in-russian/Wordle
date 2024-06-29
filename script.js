@@ -22,6 +22,7 @@ document.getElementById('start-game-btn').addEventListener('click', () => {
     }
 
     const hashedWord = hashWord(hiddenWord);
+    localStorage.setItem(hashedWord, hiddenWord);  // Сохраняем слово в localStorage
     const gameLink = `${window.location.origin}${window.location.pathname}?word=${hashedWord}&length=${wordLength}`;
     document.getElementById('game-link').textContent = gameLink;
     document.getElementById('game-link').href = gameLink;
@@ -32,8 +33,13 @@ const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has('word') && urlParams.has('length')) {
     const hashedWord = urlParams.get('word');
     const wordLength = parseInt(urlParams.get('length'), 10);
-    // Здесь нужно сопоставить хэш с настоящим словом
-    word = "загаданное слово".substring(0, wordLength); // Замените соответствующим образом
+    word = localStorage.getItem(hashedWord);  // Получаем слово из localStorage
+
+    if (!word) {
+        document.getElementById('message').textContent = "Неверная ссылка или слово.";
+        return;
+    }
+
     document.getElementById('start-game-btn').style.display = 'none';
     document.getElementById('hidden-word').style.display = 'none';
     document.getElementById('word-length').style.display = 'none';
