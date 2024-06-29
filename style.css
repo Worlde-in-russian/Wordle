@@ -4,12 +4,18 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #121213;
     margin: 0;
+    color: #ffffff;
 }
 
 .game-container {
     text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
 #game-board {
@@ -17,22 +23,33 @@ body {
     grid-template-columns: repeat(5, 50px);
     gap: 5px;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 #game-board div {
     width: 50px;
     height: 50px;
-    border: 1px solid #ccc;
+    border: 2px solid #3a3a3c;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    background-color: white;
+    background-color: #121213;
+    color: #ffffff;
 }
 
-#guess-input {
-    width: 100px;
-    text-align: center;
+#guess-input, #hidden-word, #word-length, #start-game-btn, #submit-btn {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#submit-btn, #start-game-btn {
+    background-color: #538d4e;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 #message {
