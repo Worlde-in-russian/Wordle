@@ -34,6 +34,8 @@ document.getElementById('submit-btn').addEventListener('click', () => {
             cell.style.backgroundColor = 'green';
         } else if (word.includes(guess[i])) {
             cell.style.backgroundColor = 'yellow';
+        } else {
+            cell.style.backgroundColor = '#3a3a3c';
         }
         row.appendChild(cell);
     }
