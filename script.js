@@ -52,13 +52,13 @@ if (urlParams.has('word') && urlParams.has('length')) {
 
 function createGameBoard(wordLength) {
     const board = document.getElementById('game-board');
-    for (let i = 0; i < maxAttempts; i++) {
-        const row = document.createElement('div');
-        for (let j = 0; j < wordLength; j++) {
+    for (let i = 0; i < wordLength; i++) {
+        const col = document.createElement('div');
+        for (let j = 0; j < maxAttempts; j++) {
             const cell = document.createElement('div');
-            row.appendChild(cell);
+            col.appendChild(cell);
         }
-        board.appendChild(row);
+        board.appendChild(col);
     }
 }
 
@@ -74,7 +74,7 @@ document.getElementById('submit-btn').addEventListener('click', () => {
     }
     document.getElementById('message').textContent = "";
     for (let i = 0; i < guess.length; i++) {
-        const cell = document.getElementById('game-board').children[currentRow].children[i];
+        const cell = document.getElementById('game-board').children[i].children[currentRow];
         cell.textContent = guess[i];
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
