@@ -1,53 +1,29 @@
-function hashWord(word) {
-    let hash = 0;
-    for (let i = 0; i < word.length; i++) {
-        const char = word.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash |= 0;
-    }
-    return hash.toString(16);
+const words = [
+    'слово', 'пример', 'загадка', 'игра', 'кодекс', 'мышка', 'столик', 'огонь', 'чайник', 'школа'
+    // Добавьте больше слов сюда
+];
+
+function getWordForToday() {
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    return words[dayOfYear % words.length];
 }
 
-let word = '';
+let word = getWordForToday();
 let currentRow = 0;
 const maxAttempts = 6;
 
-document.getElementById('start-game-btn').addEventListener('click', () => {
-    const hiddenWord = document.getElementById('hidden-word').value.toLowerCase();
-    const wordLength = parseInt(document.getElementById('word-length').value, 10);
-
-    if (hiddenWord.length !== wordLength || wordLength < 4 || wordLength > 10) {
-        document.getElementById('message').textContent = "Введите корректное слово и длину.";
-        return;
-    }
-
-    const hashedWord = hashWord(hiddenWord);
-    const gameLink = `${window.location.origin}${window.location.pathname}?word=${hashedWord}&length=${wordLength}&actualWord=${hiddenWord}`;
-    document.getElementById('game-link').textContent = gameLink;
-    document.getElementById('game-link').href = gameLink;
-    document.getElementById('link-container').style.display = 'block';
+document.getElementById('create-link').addEventListener('click', (event) => {
+    event.preventDefault();
+    word = getWordForToday(); // Слово меняется каждый день, здесь не нужно ничего менять
+    window.location.reload(); // Перезагрузка страницы, чтобы начать новую игру
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has('word') && urlParams.has('length') && urlParams.has('actualWord')) {
-    const hashedWord = urlParams.get('word');
-    const wordLength = parseInt(urlParams.get('length'), 10);
-    word = urlParams.get('actualWord');
-
-    if (hashWord(word) !== hashedWord) {
-        document.getElementById('message').textContent = "Неверная ссылка или слово.";
-        return;
-    }
-
-    document.getElementById('start-game-btn').style.display = 'none';
-    document.getElementById('hidden-word').style.display = 'none';
-    document.getElementById('word-length').style.display = 'none';
-    document.getElementById('game-board').style.display = 'flex';
-    document.getElementById('guess-input').style.display = 'block';
-    document.getElementById('submit-btn').style.display = 'block';
-    document.getElementById('guess-input').setAttribute('maxlength', word.length);
-    createGameBoard(wordLength);
-}
+document.getElementById('game-board').style.display = 'flex';
+document.getElementById('guess-input').style.display = 'block';
+document.getElementById('submit-btn').style.display = 'block';
+document.getElementById('guess-input').setAttribute('maxlength', word.length);
+createGameBoard(word.length);
 
 function createGameBoard(wordLength) {
     const board = document.getElementById('game-board');
