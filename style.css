@@ -169,6 +169,23 @@ h1 {
     border-color: yellow !important;
 }
 
+/* Media queries for mobile devices */
+@media screen and (max-width: 600px) {
+    .keyboard {
+        font-size: 12px; /* Уменьшаем размер шрифта клавиатуры */
+    }
+
+    .key {
+        width: 30px; /* Уменьшаем ширину клавиш */
+        height: 30px; /* Уменьшаем высоту клавиш */
+        font-size: 12px; /* Уменьшаем размер шрифта на клавишах */
+    }
+
+    .key.large {
+        width: 60px; /* Уменьшаем ширину увеличенных клавиш */
+    }
+}
+
 @keyframes key-animation {
     0% { transform: scale(1); }
     50% { transform: scale(0.9); }
