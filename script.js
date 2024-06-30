@@ -63,10 +63,8 @@ if (urlWordId) {
 
 if (word) {
     document.getElementById('game-board').style.display = 'flex';
-    document.getElementById('guess-input').style.display = 'block';
-    document.getElementById('submit-btn').style.display = 'block';
-    document.getElementById('guess-input').setAttribute('maxlength', word.length);
     createGameBoard(word.length);
+    createKeyboard();
 }
 
 function createGameBoard(wordLength) {
@@ -82,12 +80,62 @@ function createGameBoard(wordLength) {
     }
 }
 
-document.getElementById('guess-input').addEventListener('input', (e) => {
-    e.target.value = e.target.value.replace(/[^а-яё]/gi, '');
-});
+function createKeyboard() {
+    const keyboard = document.getElementById('keyboard');
+    const keys = [
+        'йцукенгшщзхъ',
+        'фывапролджэ',
+        'ячсмитьбю'
+    ];
 
-document.getElementById('submit-btn').addEventListener('click', () => {
-    const guess = document.getElementById('guess-input').value.toLowerCase();
+    keys.forEach(row => {
+        const rowElement = document.createElement('div');
+        rowElement.className = 'keyboard-row';
+        row.split('').forEach(key => {
+            const keyElement = document.createElement('div');
+            keyElement.className = 'key';
+            keyElement.textContent = key;
+            keyElement.onclick = () => handleKeyPress(key);
+            rowElement.appendChild(keyElement);
+        });
+        keyboard.appendChild(rowElement);
+    });
+
+    const rowElement = document.createElement('div');
+    rowElement.className = 'keyboard-row';
+
+    const enterKey = document.createElement('div');
+    enterKey.className = 'key large';
+    enterKey.textContent = 'Enter';
+    enterKey.onclick = handleSubmit;
+    rowElement.appendChild(enterKey);
+
+    const backspaceKey = document.createElement('div');
+    backspaceKey.className = 'key large';
+    backspaceKey.textContent = '←';
+    backspaceKey.onclick = handleBackspace;
+    rowElement.appendChild(backspaceKey);
+
+    keyboard.appendChild(rowElement);
+}
+
+function handleKeyPress(key) {
+    const guessInput = document.getElementById('guess-input');
+    if (guessInput.value.length < word.length) {
+        guessInput.value += key;
+        updateBoard();
+    }
+}
+
+function handleBackspace() {
+    const guessInput = document.getElementById('guess-input');
+    guessInput.value = guessInput.value.slice(0, -1);
+    updateBoard();
+}
+
+function handleSubmit() {
+    const guessInput = document.getElementById('guess-input');
+    const guess = guessInput.value.toLowerCase();
     if (guess.length !== word.length) {
         document.getElementById('message').textContent = `Введите слово из ${word.length} букв.`;
         return;
@@ -98,11 +146,14 @@ document.getElementById('submit-btn').addEventListener('click', () => {
         cell.textContent = guess[i];
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
+            cell.classList.add('correct');
         } else if (word.includes(guess[i])) {
             cell.style.backgroundColor = 'yellow';
+            cell.classList.add('present');
         } else {
             cell.style.backgroundColor = '#3a3a3c';
         }
+        animateCell(cell);
     }
     currentRow++;
     if (guess === word) {
@@ -112,19 +163,25 @@ document.getElementById('submit-btn').addEventListener('click', () => {
         document.getElementById('message').textContent = `Вы проиграли! Слово: ${word}`;
         resetGame();
     }
-    document.getElementById('guess-input').value = '';
-});
-
-function resetGame() {
-    document.getElementById('guess-input').style.display = 'none';
-    document.getElementById('submit-btn').style.display = 'none';
+    guessInput.value = '';
 }
 
-document.addEventListener('keypress', (e) => {
-    if (document.getElementById('guess-input').style.display !== 'none') {
-        if (/[^а-яё]/i.test(e.key)) {
-            e.preventDefault();
-        }
+function updateBoard() {
+    const guessInput = document.getElementById('guess-input');
+    const guess = guessInput.value;
+    for (let i = 0; i < word.length; i++) {
+        const cell = document.getElementById('game-board').children[currentRow].children[i];
+        cell.textContent = guess[i] || '';
     }
-});
-    
+}
+
+function animateCell(cell) {
+    cell.classList.add('active');
+    setTimeout(() => {
+        cell.classList.remove('active');
+    }, 200);
+}
+
+function resetGame() {
+    document.getElementById('keyboard').style.display = 'none';
+}
