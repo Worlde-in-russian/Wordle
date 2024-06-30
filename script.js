@@ -1,10 +1,12 @@
 function encodeWord(word) {
-    return btoa(unescape(encodeURIComponent(word)));
+    const randomString = Math.random().toString(36).substring(2, 15);
+    return btoa(unescape(encodeURIComponent(`${randomString}:${word}`)));
 }
 
 function decodeWord(encoded) {
     try {
-        return decodeURIComponent(escape(atob(encoded)));
+        const decoded = decodeURIComponent(escape(atob(encoded)));
+        return decoded.split(':')[1];
     } catch (e) {
         console.error("Decoding error:", e);
         return null;
@@ -125,3 +127,4 @@ document.addEventListener('keypress', (e) => {
         }
     }
 });
+    
