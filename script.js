@@ -47,9 +47,7 @@ document.getElementById('create-link-btn').addEventListener('click', () => {
         linkElement.style.display = 'block';
 
         // Automatically copy the link to clipboard
-        navigator.clipboard.writeText(link).then(() => {
-            alert('Ссылка скопирована в буфер обмена.');
-        }).catch(err => {
+        navigator.clipboard.writeText(link).catch(err => {
             console.error('Ошибка копирования:', err);
         });
     } else {
@@ -204,4 +202,3 @@ function resetGame() {
 // Initialize guess input
 const guessInput = document.getElementById('guess-input');
 guessInput.style.display = 'none';
-    
