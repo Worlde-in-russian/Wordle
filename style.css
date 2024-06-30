@@ -56,25 +56,58 @@ h1 {
     background-color: #121213;
     color: #ffffff;
     border-radius: 5px;
-}
-
-#guess-input, #submit-btn {
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-#submit-btn {
-    background-color: #538d4e;
-    color: #ffffff;
-    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
 }
 
 #message {
     margin-top: 10px;
     color: red;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.key {
+    width: 40px;
+    height: 40px;
+    background-color: #3a3a3c;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.key.large {
+    width: 80px;
+}
+
+.key:hover {
+    background-color: #4a4a4c;
+}
+
+.key.active {
+    transform: scale(0.9);
+}
+
+.key.correct {
+    background-color: green;
+}
+
+.key.present {
+    background-color: yellow;
 }
 
 /* Modal styles */
