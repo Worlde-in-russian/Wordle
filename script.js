@@ -63,6 +63,7 @@ if (urlWordId) {
 
 if (word) {
     document.getElementById('game-board').style.display = 'flex';
+    document.getElementById('guess-input').setAttribute('maxlength', word.length);
     createGameBoard(word.length);
     createKeyboard();
 }
@@ -185,3 +186,7 @@ function animateCell(cell) {
 function resetGame() {
     document.getElementById('keyboard').style.display = 'none';
 }
+
+// Initialize guess input
+const guessInput = document.getElementById('guess-input');
+guessInput.style.display = 'block';
