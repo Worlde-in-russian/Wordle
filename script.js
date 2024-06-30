@@ -16,6 +16,7 @@ function decodeWord(encoded) {
 let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || '';
 let currentRow = 0;
 const maxAttempts = 6;
+const keyboardState = {};
 
 // Modal logic
 const modal = document.getElementById('create-link-modal');
@@ -97,6 +98,7 @@ function createKeyboard() {
             keyElement.className = 'key';
             keyElement.textContent = key;
             keyElement.onclick = () => handleKeyPress(key);
+            keyboardState[key.toLowerCase()] = keyElement;
             rowElement.appendChild(keyElement);
         });
         keyboard.appendChild(rowElement);
@@ -144,24 +146,29 @@ function handleSubmit() {
     document.getElementById('message').textContent = "";
     for (let i = 0; i < guess.length; i++) {
         const cell = document.getElementById('game-board').children[currentRow].children[i];
+        const keyElement = keyboardState[guess[i]];
         cell.textContent = guess[i].toUpperCase();
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
-            cell.classList.add('correct');
+            keyElement.style.backgroundColor = 'green';
+            keyElement.style.borderColor = 'green';
         } else if (word.includes(guess[i])) {
             cell.style.backgroundColor = 'yellow';
-            cell.classList.add('present');
+            keyElement.style.backgroundColor = 'yellow';
+            keyElement.style.borderColor = 'yellow';
         } else {
             cell.style.backgroundColor = '#3a3a3c';
+            keyElement.style.backgroundColor = '#3a3a3c';
+            keyElement.style.borderColor = 'gray';
         }
         animateCell(cell);
     }
     currentRow++;
     if (guess === word) {
-        document.getElementById('message').textContent = "Вы угадали!";
+        document.getElementById('message').textContent = "Вы Угадали!";
         resetGame();
     } else if (currentRow === maxAttempts) {
-        document.getElementById('message').textContent = `Вы проиграли! СЛОВО: ${word.toUpperCase()}`;
+        document.getElementById('message').textContent = `Вы Проиграли! СЛОВО: ${word.toUpperCase()}`;
         resetGame();
     }
     guessInput.value = '';
