@@ -18,6 +18,9 @@ let currentRow = 0;
 const maxAttempts = 6;
 const keyboardState = {};
 
+// Массив допустимых слов
+const validWords = ['пример', 'слово', 'тест']; // Здесь добавьте все допустимые слова
+
 // Modal logic
 const modal = document.getElementById('create-link-modal');
 const openModalBtn = document.getElementById('open-modal-btn');
@@ -146,6 +149,10 @@ function handleSubmit() {
     const guess = guessInput.value.toLowerCase();
     if (guess.length !== word.length) {
         document.getElementById('message').textContent = `Введите слово из ${word.length} букв.`;
+        return;
+    }
+    if (!validWords.includes(guess)) {
+        document.getElementById('message').textContent = "Это слово не существует.";
         return;
     }
     document.getElementById('message').textContent = "";
