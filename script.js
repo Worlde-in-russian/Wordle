@@ -84,9 +84,9 @@ function createGameBoard(wordLength) {
 function createKeyboard() {
     const keyboard = document.getElementById('keyboard');
     const keys = [
-        'йцукенгшщзхъ',
-        'фывапролджэ',
-        'ячсмитьбю'
+        'ЙЦУКЕНГШЩЗХЪ',
+        'ФЫВАПРОЛДЖЭ',
+        'ЯЧСМИТЬБЮ'
     ];
 
     keys.forEach(row => {
@@ -107,7 +107,7 @@ function createKeyboard() {
 
     const enterKey = document.createElement('div');
     enterKey.className = 'key large';
-    enterKey.textContent = 'Enter';
+    enterKey.textContent = 'ENTER';
     enterKey.onclick = handleSubmit;
     rowElement.appendChild(enterKey);
 
@@ -123,7 +123,7 @@ function createKeyboard() {
 function handleKeyPress(key) {
     const guessInput = document.getElementById('guess-input');
     if (guessInput.value.length < word.length) {
-        guessInput.value += key;
+        guessInput.value += key.toLowerCase();
         updateBoard();
     }
 }
@@ -144,7 +144,7 @@ function handleSubmit() {
     document.getElementById('message').textContent = "";
     for (let i = 0; i < guess.length; i++) {
         const cell = document.getElementById('game-board').children[currentRow].children[i];
-        cell.textContent = guess[i];
+        cell.textContent = guess[i].toUpperCase();
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
             cell.classList.add('correct');
@@ -158,10 +158,10 @@ function handleSubmit() {
     }
     currentRow++;
     if (guess === word) {
-        document.getElementById('message').textContent = "Вы угадали!";
+        document.getElementById('message').textContent = "ВЫ УГАДАЛИ!";
         resetGame();
     } else if (currentRow === maxAttempts) {
-        document.getElementById('message').textContent = `Вы проиграли! Слово: ${word}`;
+        document.getElementById('message').textContent = `ВЫ ПРОИГРАЛИ! СЛОВО: ${word.toUpperCase()}`;
         resetGame();
     }
     guessInput.value = '';
@@ -172,7 +172,7 @@ function updateBoard() {
     const guess = guessInput.value;
     for (let i = 0; i < word.length; i++) {
         const cell = document.getElementById('game-board').children[currentRow].children[i];
-        cell.textContent = guess[i] || '';
+        cell.textContent = guess[i] ? guess[i].toUpperCase() : '';
     }
 }
 
@@ -189,4 +189,4 @@ function resetGame() {
 
 // Initialize guess input
 const guessInput = document.getElementById('guess-input');
-guessInput.style.display = 'block';
+guessInput.style.display = 'none';
