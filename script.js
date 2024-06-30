@@ -158,10 +158,10 @@ function handleSubmit() {
     }
     currentRow++;
     if (guess === word) {
-        document.getElementById('message').textContent = "ВЫ УГАДАЛИ!";
+        document.getElementById('message').textContent = "Вы угадали!";
         resetGame();
     } else if (currentRow === maxAttempts) {
-        document.getElementById('message').textContent = `ВЫ ПРОИГРАЛИ! СЛОВО: ${word.toUpperCase()}`;
+        document.getElementById('message').textContent = `Вы проиграли! СЛОВО: ${word.toUpperCase()}`;
         resetGame();
     }
     guessInput.value = '';
