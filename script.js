@@ -45,6 +45,13 @@ document.getElementById('create-link-btn').addEventListener('click', () => {
         const linkElement = document.getElementById('generated-link');
         linkElement.textContent = link;
         linkElement.style.display = 'block';
+
+        // Automatically copy the link to clipboard
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Ссылка скопирована в буфер обмена.');
+        }).catch(err => {
+            console.error('Ошибка копирования:', err);
+        });
     } else {
         alert('Введите корректное слово на русском языке.');
     }
@@ -197,3 +204,4 @@ function resetGame() {
 // Initialize guess input
 const guessInput = document.getElementById('guess-input');
 guessInput.style.display = 'none';
+    
