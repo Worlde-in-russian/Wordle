@@ -2,19 +2,21 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordle на русском</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="create-link-modal" style="display:none;">
+    <button id="open-modal-btn">Создать ссылку</button>
+    <div id="create-link-modal">
         <div>
             <span class="close-btn">&times;</span>
-            <input type="text" id="create-word-input" placeholder="Введите слово для друга">
+            <h2>Создать слово для друга</h2>
+            <input type="text" id="create-word-input" placeholder="Введите слово на русском языке">
             <button id="create-link-btn">Создать ссылку</button>
-            <div id="generated-link" style="display:none;"></div>
+            <div id="generated-link"></div>
         </div>
     </div>
-    <button id="open-modal-btn">Создать слово для друга</button>
     <div id="game-board"></div>
     <input type="text" id="guess-input">
     <div id="keyboard"></div>
