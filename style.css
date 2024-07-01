@@ -1,178 +1,65 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #121213;
-    margin: 0;
-    color: #ffffff;
-}
-
-.game-container {
-    text-align: center;
-    position: relative;
-}
-
-#link-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
-#link-container img {
-    width: 30px;
-    height: 32px;
-    cursor: pointer;
-}
-
-h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-#game-board {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-#game-board div {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-#game-board div div {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #3a3a3c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    background-color: #121213;
-    color: #ffffff;
-    border-radius: 5px;
-}
-
-#guess-input, #submit-btn {
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-#submit-btn {
-    background-color: #538d4e;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-#message {
-    margin-top: 10px;
-    color: red;
-}
-
-/* Modal styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: #121213;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
-    color: white;
-}
-
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#generated-link {
-    word-wrap: break-word;
-    color: #538d4e;
-}
-
-.keyboard {
+#keyboard {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    margin-top: 20px;
 }
 
 .keyboard-row {
     display: flex;
-    gap: 5px;
+    margin-bottom: 10px;
 }
 
 .key {
-    width: 50px;
-    height: 50px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: #3a3a3c;
-    border: 2px solid gray;
-    color: #ffffff;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    background-color: #d3d6da;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    user-select: none;
+    font-size: 18px;
 }
 
 .key.large {
-    width: 100px;
+    width: 80px;
+}
+
+.key:active {
+    background-color: #a8a8a8;
+}
+
+#game-board {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#game-board > div {
+    display: flex;
+    margin: 5px 0;
+}
+
+#game-board > div > div {
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    background-color: #d3d6da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+#guess-input {
+    display: none;
 }
 
 .active {
-    transform: scale(0.9);
-    transition: transform 0.1s;
-}
-
-/* Animations */
-@keyframes pop {
-    0% {
-        transform: scale(0.8);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes colorChange {
-    0% {
-        background-color: #3a3a3c;
-    }
-    100% {
-        background-color: var(--color);
-    }
+    transition: transform 0.2s ease-in-out;
+    transform: scale(0.95);
 }
