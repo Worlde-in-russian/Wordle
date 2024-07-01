@@ -186,34 +186,57 @@ function handleSubmit() {
         document.getElementById('message').textContent = `Введите слово из ${word.length} букв.`;
         return;
     }
-    document.getElementById('message').textContent = "";
+    document.getElementById('message').textContent = '';
     for (let i = 0; i < guess.length; i++) {
         const cell = document.getElementById('game-board').children[currentRow].children[i];
         const keyElement = keyboardState[guess[i]];
         cell.textContent = guess[i].toUpperCase();
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
+            keyElement.style.backgroundColor = 'green';
+            keyElement.style.borderColor = 'green';
         } else if (word.includes(guess[i])) {
             cell.style.backgroundColor = 'yellow';
+            keyElement.style.backgroundColor = 'yellow';
+            keyElement.style.borderColor = 'yellow';
         } else {
-            cell.style.backgroundColor = '#d3d6da';
+            cell.style.backgroundColor = '#3a3a3c';
+            keyElement.style.backgroundColor = '#3a3a3c';
+            keyElement.style.borderColor = 'gray';
         }
+        animateCell(cell);
     }
     currentRow++;
-    guessInput.value = '';
     if (guess === word) {
         document.getElementById('message').textContent = 'Вы угадали слово!';
-    } else if (currentRow >= maxAttempts) {
+        resetGame();
+    } else if (currentRow === maxAttempts) {
         document.getElementById('message').textContent = `Игра окончена! Загаданное слово: ${word.toUpperCase()}`;
+        resetGame();
     }
+    guessInput.value = '';
 }
 
 function updateBoard() {
     const guessInput = document.getElementById('guess-input');
-    const currentGuess = guessInput.value;
-    const row = document.getElementById('game-board').children[currentRow];
+    const guess = guessInput.value;
     for (let i = 0; i < word.length; i++) {
-        const cell = row.children[i];
-        cell.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : '';
+        const cell = document.getElementById('game-board').children[currentRow].children[i];
+        cell.textContent = guess[i] ? guess[i].toUpperCase() : '';
     }
 }
+
+function animateCell(cell) {
+    cell.classList.add('active');
+    setTimeout(() => {
+        cell.classList.remove('active');
+    }, 200);
+}
+
+function resetGame() {
+    document.getElementById('keyboard').style.display = 'none';
+}
+
+// Initialize guess input
+const guessInput = document.getElementById('guess-input');
+guessInput.style.display = 'none';
