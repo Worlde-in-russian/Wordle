@@ -13,9 +13,9 @@
             <img src="images/sozdat.png" alt="Создать игру" id="open-modal-btn">
         </div>
         <div id="game-board" class="vertical-board"></div>
+        <input type="text" id="guess-input" maxlength="10" style="display:none;">
+        <button id="submit-btn" style="display:none;">ОТПРАВИТЬ</button>
         <p id="message"></p>
-        <input type="text" id="guess-input" maxlength="10" style="display: none;">
-        <div id="keyboard" class="keyboard"></div>
     </div>
 
     <!-- Modal -->
@@ -28,6 +28,8 @@
             <p id="generated-link" style="display:none;"></p>
         </div>
     </div>
+
+    <div id="keyboard" class="keyboard"></div>
 
     <script src="script.js"></script>
 </body>
