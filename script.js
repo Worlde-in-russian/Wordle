@@ -16,13 +16,17 @@ function decodeWord(encoded) {
 }
 
 // Проверка наличия слова в словаре
-function checkWordInDictionary(word) {
+async function checkWordInDictionary(word) {
     const dictionaries = ['russian.txt', 'russian_surnames.txt', 'words.txt'];
-    return Promise.all(dictionaries.map(dict => fetch(dict).then(response => response.text())))
-        .then(data => {
-            const wordsSet = new Set(data.join('\n').split('\n').map(w => w.trim().toLowerCase()));
-            return wordsSet.has(word);
-        });
+    for (const dict of dictionaries) {
+        const response = await fetch(dict);
+        const data = await response.text();
+        const wordsSet = new Set(data.split('\n').map(w => w.trim().toLowerCase()));
+        if (wordsSet.has(word)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || '';
@@ -92,6 +96,21 @@ if (word) {
     createGameBoard(word.length);
     createKeyboard();
 }
+
+// Обработка ввода с физической клавиатуры
+document.addEventListener('keydown', (event) => {
+    const guessInput = document.getElementById('guess-input');
+    const key = event.key.toLowerCase();
+    if (/^[а-яё]$/i.test(key) && guessInput.value.length < word.length) {
+        guessInput.value += key;
+        updateBoard();
+    } else if (key === 'backspace') {
+        guessInput.value = guessInput.value.slice(0, -1);
+        updateBoard();
+    } else if (key === 'enter') {
+        handleSubmit();
+    }
+});
 
 function createGameBoard(wordLength) {
     const board = document.getElementById('game-board');
@@ -174,50 +193,27 @@ function handleSubmit() {
         cell.textContent = guess[i].toUpperCase();
         if (guess[i] === word[i]) {
             cell.style.backgroundColor = 'green';
-            keyElement.style.backgroundColor = 'green';
-            keyElement.style.borderColor = 'green';
         } else if (word.includes(guess[i])) {
             cell.style.backgroundColor = 'yellow';
-            keyElement.style.backgroundColor = 'yellow';
-            keyElement.style.borderColor = 'yellow';
         } else {
-            cell.style.backgroundColor = '#3a3a3c';
-            keyElement.style.backgroundColor = '#3a3a3c';
-            keyElement.style.borderColor = 'gray';
+            cell.style.backgroundColor = '#d3d6da';
         }
-        animateCell(cell);
     }
     currentRow++;
-    if (guess === word) {
-        document.getElementById('message').textContent = "Вы Угадали!";
-        resetGame();
-    } else if (currentRow === maxAttempts) {
-        document.getElementById('message').textContent = `Вы Проиграли! СЛОВО: ${word.toUpperCase()}`;
-        resetGame();
-    }
     guessInput.value = '';
+    if (guess === word) {
+        document.getElementById('message').textContent = 'Вы угадали слово!';
+    } else if (currentRow >= maxAttempts) {
+        document.getElementById('message').textContent = `Игра окончена! Загаданное слово: ${word.toUpperCase()}`;
+    }
 }
 
 function updateBoard() {
     const guessInput = document.getElementById('guess-input');
-    const guess = guessInput.value;
+    const currentGuess = guessInput.value;
+    const row = document.getElementById('game-board').children[currentRow];
     for (let i = 0; i < word.length; i++) {
-        const cell = document.getElementById('game-board').children[currentRow].children[i];
-        cell.textContent = guess[i] ? guess[i].toUpperCase() : '';
+        const cell = row.children[i];
+        cell.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : '';
     }
 }
-
-function animateCell(cell) {
-    cell.classList.add('active');
-    setTimeout(() => {
-        cell.classList.remove('active');
-    }, 200);
-}
-
-function resetGame() {
-    document.getElementById('keyboard').style.display = 'none';
-}
-
-// Initialize guess input
-const guessInput = document.getElementById('guess-input');
-guessInput.style.display = 'none';
