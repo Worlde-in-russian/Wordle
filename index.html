@@ -2,35 +2,23 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Russian Wordle</title>
+    <title>Wordle на русском</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>Вордли от друга</h1>
-        <div id="link-container">
-            <img src="images/sozdat.png" alt="Создать игру" id="open-modal-btn">
-        </div>
-        <div id="game-board" class="vertical-board"></div>
-        <input type="text" id="guess-input" maxlength="10" style="display:none;">
-        <button id="submit-btn" style="display:none;">ОТПРАВИТЬ</button>
-        <p id="message"></p>
-    </div>
-
-    <!-- Modal -->
-    <div id="create-link-modal" class="modal">
-        <div class="modal-content">
+    <div id="create-link-modal" style="display:none;">
+        <div>
             <span class="close-btn">&times;</span>
-            <h2>Создать слово для друга</h2>
-            <input type="text" id="create-word-input" placeholder="Введите слово" maxlength="10">
+            <input type="text" id="create-word-input" placeholder="Введите слово для друга">
             <button id="create-link-btn">Создать ссылку</button>
-            <p id="generated-link" style="display:none;"></p>
+            <div id="generated-link" style="display:none;"></div>
         </div>
     </div>
-
-    <div id="keyboard" class="keyboard"></div>
-
+    <button id="open-modal-btn">Создать слово для друга</button>
+    <div id="game-board"></div>
+    <input type="text" id="guess-input">
+    <div id="keyboard"></div>
+    <div id="message"></div>
     <script src="script.js"></script>
 </body>
 </html>
