@@ -1,8 +1,10 @@
+// Функция для кодирования слова в base64
 function encodeWord(word) {
     const randomString = Math.random().toString(36).substring(2, 15);
     return btoa(unescape(encodeURIComponent(`${randomString}:${word}`)));
 }
 
+// Функция для декодирования слова из base64
 function decodeWord(encoded) {
     try {
         const decoded = decodeURIComponent(escape(atob(encoded)));
@@ -13,15 +15,22 @@ function decodeWord(encoded) {
     }
 }
 
+// Проверка наличия слова в словаре
+function checkWordInDictionary(word) {
+    const dictionaries = ['russian.txt', 'russian_surnames.txt', 'words.txt'];
+    return Promise.all(dictionaries.map(dict => fetch(dict).then(response => response.text())))
+        .then(data => {
+            const wordsSet = new Set(data.join('\n').split('\n').map(w => w.trim().toLowerCase()));
+            return wordsSet.has(word);
+        });
+}
+
 let word = decodeWord(new URLSearchParams(window.location.search).get('word_id')) || '';
 let currentRow = 0;
 const maxAttempts = 6;
 const keyboardState = {};
 
-// Массив допустимых слов
-const validWords = ['пример', 'слово', 'тест']; // Здесь добавьте все допустимые слова
-
-// Modal logic
+// Модальное окно
 const modal = document.getElementById('create-link-modal');
 const openModalBtn = document.getElementById('open-modal-btn');
 const closeModalBtn = document.getElementsByClassName('close-btn')[0];
@@ -40,19 +49,26 @@ window.onclick = function(event) {
     }
 };
 
-document.getElementById('create-link-btn').addEventListener('click', () => {
+document.getElementById('create-link-btn').addEventListener('click', async () => {
     const newWord = document.getElementById('create-word-input').value.toLowerCase();
     if (newWord && /^[а-яё]+$/i.test(newWord)) {
+        const wordExists = await checkWordInDictionary(newWord);
         const encodedWord = encodeWord(newWord);
         const link = `${window.location.origin}${window.location.pathname}?word_id=${encodedWord}`;
         const linkElement = document.getElementById('generated-link');
         linkElement.textContent = link;
         linkElement.style.display = 'block';
 
-        // Automatically copy the link to clipboard
-        navigator.clipboard.writeText(link).catch(err => {
-            console.error('Ошибка копирования:', err);
+        // Копирование ссылки в буфер обмена
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Ссылка скопирована в буфер обмена.');
+        }).catch((err) => {
+            console.error('Ошибка при копировании ссылки в буфер обмена:', err);
         });
+
+        if (!wordExists) {
+            alert('Это слово не в списке допустимых слов, но оно будет использовано для игры.');
+        }
     } else {
         alert('Введите корректное слово на русском языке.');
     }
@@ -149,10 +165,6 @@ function handleSubmit() {
     const guess = guessInput.value.toLowerCase();
     if (guess.length !== word.length) {
         document.getElementById('message').textContent = `Введите слово из ${word.length} букв.`;
-        return;
-    }
-    if (!validWords.includes(guess)) {
-        document.getElementById('message').textContent = "Это слово не существует.";
         return;
     }
     document.getElementById('message').textContent = "";
